@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Rapido — Доставка по России и СНГ | Персональный менеджер 24/7</title>
+    <meta name="description" content="Транспортная компания Cargo Rapido. Доставка грузов, посылок, документов по России и СНГ. Персональный AI-менеджер рассчитает стоимость за 60 секунд.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #E8450E;
+            --primary-dark: #C73A0A;
+            --primary-light: #FF6B35;
+            --dark: #0F0F1A;
+            --text: #1A1A2E;
+            --text-light: #6B7280;
+            --text-muted: #9CA3AF;
+            --bg: #FFFFFF;
+            --bg-light: #F7F8FA;
+            --bg-dark: #0B0B14;
+            --border: #E5E7EB;
+            --green: #22C55E;
+            --blue: #3B82F6;
+            --gradient: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+        /* ============ HEADER ============ */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s;
+        }
+        .header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+        .header-inner {
+            display: flex; align-items: center; height: 68px; gap: 32px;
+        }
+        .logo {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; color: var(--dark);
+        }
+        .logo-box {
+            width: 40px; height: 40px;
+            background: var(--gradient); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .logo-name { font-size: 21px; font-weight: 600; }
+        .logo-name b { font-weight: 800; color: var(--primary); }
+        .nav { display: flex; gap: 28px; margin-left: auto; }
+        .nav a {
+            color: var(--text); text-decoration: none;
+            font-size: 14px; font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav a:hover { color: var(--primary); }
+        .header-cta {
+            display: flex; gap: 10px; align-items: center;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 22px; font-family: inherit; font-weight: 600;
+            font-size: 14px; border-radius: 10px; border: 2px solid transparent;
+            cursor: pointer; text-decoration: none; transition: all 0.2s;
+        }
+        .btn-outline { background: transparent; color: var(--primary); border-color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-primary {
+            background: var(--gradient); color: white; border-color: var(--primary);
+            box-shadow: 0 2px 10px rgba(232,69,14,0.2);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,69,14,0.3); }
+        .btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 12px; }
+        .btn-white { background: white; color: var(--primary); border-color: white; padding: 14px 32px; font-size: 16px; }
+        .btn-white:hover { background: transparent; color: white; }
+
+        .burger { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
+        .burger span { display: block; width: 22px; height: 2px; background: var(--dark); margin: 5px 0; transition: 0.3s; }
+
+        /* ============ HERO ============ */
+        .hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(170deg, #FFF8F5 0%, #FFFFFF 40%, #F5F7FF 100%);
+            overflow: hidden;
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 60px; align-items: center;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 14px; background: #FFF0E8;
+            color: var(--primary); font-size: 13px; font-weight: 600;
+            border-radius: 50px; margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 46px; font-weight: 900; line-height: 1.12;
+            color: var(--dark); margin-bottom: 18px;
+        }
+        .hero h1 span {
+            background: var(--gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-text {
+            font-size: 17px; color: var(--text-light);
+            line-height: 1.6; margin-bottom: 28px; max-width: 480px;
+        }
+        .hero-btns { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+        .hero-trust {
+            display: flex; gap: 32px; align-items: center;
+            padding-top: 28px; border-top: 1px solid var(--border);
+        }
+        .trust-item { text-align: center; }
+        .trust-item strong { display: block; font-size: 26px; font-weight: 800; color: var(--dark); }
+        .trust-item span { font-size: 12px; color: var(--text-muted); }
+
+        /* Hero right - phone mockup with chat */
+        .hero-phone {
+            position: relative;
+            display: flex; justify-content: center;
+        }
+        .phone-frame {
+            width: 320px;
+            background: #1A1A2E;
+            border-radius: 36px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .phone-screen {
+            background: #E8E6F0;
+            border-radius: 26px;
+            overflow: hidden;
+            height: 520px;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-header {
+            background: white; padding: 14px 16px;
+            display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .phone-ava {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: var(--gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .phone-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+        .phone-status { font-size: 11px; color: var(--green); }
+        .phone-msgs {
+            flex: 1; padding: 12px;
+            display: flex; flex-direction: column; gap: 6px;
+            overflow: hidden;
+        }
+        .pm { max-width: 80%; }
+        .pm-bot { align-self: flex-start; }
+        .pm-user { align-self: flex-end; }
+        .pm-bubble {
+            padding: 8px 12px; font-size: 12.5px; line-height: 1.45;
+        }
+        .pm-bot .pm-bubble {
+            background: white; color: var(--text);
+            border-radius: 4px 14px 14px 14px;
+        }
+        .pm-user .pm-bubble {
+            background: var(--primary); color: white;
+            border-radius: 14px 4px 14px 14px;
+        }
+        .pm-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; padding: 0 4px; }
+        .pm-user .pm-time { text-align: right; }
+        .phone-input {
+            background: white; padding: 10px 14px;
+            display: flex; align-items: center; gap: 8px;
+            border-top: 1px solid #eee;
+        }
+        .phone-input-field {
+            flex: 1; padding: 8px 12px;
+            background: #F5F5F8; border-radius: 20px;
+            font-size: 12px; color: var(--text-muted); border: none;
+        }
+        .phone-send {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: var(--gradient); border: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .phone-send svg { width: 14px; height: 14px; fill: white; }
+
+        /* ============ TRUST BAR ============ */
+        .trust-bar {
+            padding: 40px 0;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .trust-bar-inner {
+            display: flex; justify-content: center;
+            gap: 48px; align-items: center; flex-wrap: wrap;
+        }
+        .trust-logo {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text-muted); font-size: 14px; font-weight: 500;
+        }
+        .trust-logo-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: white; border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+        }
+
+        /* ============ HOW IT WORKS ============ */
+        .section { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-label {
+            display: inline-block; padding: 4px 12px;
+            background: #FFF0E8; color: var(--primary);
+            border-radius: 50px; font-size: 12px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+        .section-title {
+            font-size: 34px; font-weight: 800; color: var(--dark);
+            margin-bottom: 12px;
+        }
+        .section-sub {
+            font-size: 17px; color: var(--text-light); max-width: 540px;
+            margin: 0 auto; line-height: 1.6;
+        }
+
+        /* Explanation block */
+        .explain {
+            background: linear-gradient(135deg, #1A1A2E, #2D2B55);
+            border-radius: 24px; padding: 48px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 48px; align-items: center; color: white;
+            margin-bottom: 64px;
+        }
+        .explain-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; background: rgba(255,255,255,0.1);
+            border-radius: 50px; font-size: 12px; font-weight: 600;
+            margin-bottom: 16px; color: var(--primary-light);
+        }
+        .explain h3 {
+            font-size: 28px; font-weight: 800; margin-bottom: 16px; line-height: 1.25;
+        }
+        .explain p {
+            font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.65;
+            margin-bottom: 20px;
+        }
+        .explain-list {
+            list-style: none; display: flex; flex-direction: column; gap: 12px;
+        }
+        .explain-list li {
+            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 14px; color: rgba(255,255,255,0.85);
+        }
+        .explain-list li::before { content: "✓"; color: var(--green); font-weight: 800; flex-shrink: 0; }
+
+        .explain-right {
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .compare-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 20px;
+        }
+        .compare-card.old { opacity: 0.6; }
+        .compare-card.new { border-color: var(--primary); background: rgba(232,69,14,0.08); }
+        .compare-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 10px;
+        }
+        .compare-card.old .compare-label { color: var(--text-muted); }
+        .compare-card.new .compare-label { color: var(--primary-light); }
+        .compare-steps {
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .compare-step {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; color: rgba(255,255,255,0.7);
+        }
+        .compare-step .num {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; flex-shrink: 0;
+        }
+        .compare-card.new .compare-step .num { background: rgba(232,69,14,0.2); color: var(--primary-light); }
+        .compare-card.old .compare-step.strike { text-decoration: line-through; opacity: 0.5; }
+        .compare-time {
+            margin-top: 10px; font-size: 20px; font-weight: 800;
+        }
+        .compare-card.old .compare-time { color: var(--text-muted); }
+        .compare-card.new .compare-time { color: var(--green); }
+
+        /* Steps */
+        .steps-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+        }
+        .step-card {
+            text-align: center; padding: 32px 20px;
+            background: var(--bg-light); border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.2s; position: relative;
+        }
+        .step-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        .step-num {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--gradient); color: white;
+            font-size: 20px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px;
+        }
+        .step-card h4 { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+        .step-card p { font-size: 13px; color: var(--text-light); line-height: 1.5; }
+        .step-arrow {
+            position: absolute; right: -18px; top: 50%;
+            transform: translateY(-50%); font-size: 18px; color: var(--border);
+        }
+        .step-card:last-child .step-arrow { display: none; }
+
+        /* ============ SERVICES ============ */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+        }
+        .svc-card {
+            background: white; border: 1.5px solid var(--border);
+            border-radius: 16px; padding: 28px 20px;
+            text-align: center; transition: all 0.2s;
+        }
+        .svc-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(232,69,14,0.08); }
+        .svc-icon { font-size: 40px; margin-bottom: 14px; }
+        .svc-card h4 { font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+        .svc-card p { font-size: 13px; color: var(--text-light); margin-bottom: 14px; line-height: 1.5; }
+        .svc-price { font-size: 18px; font-weight: 800; color: var(--primary); }
+
+        /* ============ REVIEWS ============ */
+        .reviews-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        }
+        .review {
+            background: white; border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px;
+        }
+        .review-stars { color: #FFC107; font-size: 16px; margin-bottom: 10px; }
+        .review p { font-size: 14px; font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
+        .review-author strong { display: block; font-size: 14px; color: var(--dark); }
+        .review-author span { font-size: 12px; color: var(--text-muted); }
+
+        /* ============ CHAT SECTION ============ */
+        .chat-section {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #E8E6F0;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.1);
+            height: 560px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-hdr {
+            background: white;
+            padding: 16px 24px;
+            display: flex; align-items: center; gap: 12px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .chat-hdr-ava {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: var(--gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .chat-hdr-name { font-size: 15px; font-weight: 700; color: var(--dark); }
+        .chat-hdr-status { font-size: 12px; color: var(--green); display: flex; align-items: center; gap: 4px; }
+        .chat-hdr-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+        .chat-msgs {
+            flex: 1; overflow-y: auto; padding: 16px 24px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .cm { max-width: 70%; animation: cmIn 0.3s ease; }
+        @keyframes cmIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+        .cm-bot { align-self: flex-start; display: flex; gap: 8px; }
+        .cm-user { align-self: flex-end; }
+        .cm-ava {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; flex-shrink: 0; margin-top: 2px;
+        }
+        .cm-bubble {
+            padding: 10px 14px; font-size: 14px; line-height: 1.5;
+            white-space: pre-wrap; word-break: break-word;
+        }
+        .cm-bot .cm-bubble { background: white; color: var(--text); border-radius: 4px 16px 16px 16px; }
+        .cm-user .cm-bubble { background: var(--primary); color: white; border-radius: 16px 4px 16px 16px; }
+        .cm-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; padding: 0 4px; }
+        .cm-user .cm-time { text-align: right; }
+
+        .typing-ind { display: none; align-self: flex-start; gap: 8px; }
+        .typing-ind.show { display: flex; }
+        .typing-ind .cm-ava { background: var(--gradient); }
+        .typing-dots {
+            background: white; border-radius: 4px 16px 16px 16px;
+            padding: 10px 16px; display: flex; gap: 4px; align-items: center;
+        }
+        .typing-dots span {
+            width: 7px; height: 7px; border-radius: 50%; background: #B8B8C8;
+            animation: tdot 1.4s infinite;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes tdot {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        .chat-qr {
+            display: flex; gap: 6px; flex-wrap: wrap;
+            padding: 8px 24px; flex-shrink: 0;
+        }
+        .chat-qr.hidden { display: none; }
+        .qr {
+            padding: 8px 14px; background: white;
+            border: 1.5px solid #D8D8E4; border-radius: 50px;
+            font-size: 13px; font-family: inherit; font-weight: 500;
+            color: var(--text); cursor: pointer; transition: 0.15s;
+        }
+        .qr:hover { border-color: var(--primary); color: var(--primary); }
+
+        .chat-inp {
+            padding: 10px 24px 16px; flex-shrink: 0;
+        }
+        .chat-inp-box {
+            display: flex; align-items: flex-end; gap: 8px;
+            background: white; border-radius: 20px;
+            padding: 6px 6px 6px 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .chat-inp-box textarea {
+            flex: 1; border: none; outline: none;
+            font-family: inherit; font-size: 14px;
+            resize: none; max-height: 80px; line-height: 1.5;
+            padding: 7px 0; background: transparent;
+        }
+        .chat-inp-box textarea::placeholder { color: #B0B0BE; }
+        .chat-send {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--gradient); border: none;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: 0.15s;
+        }
+        .chat-send:hover { transform: scale(1.06); }
+        .chat-send:disabled { opacity: 0.4; }
+        .chat-send svg { width: 18px; height: 18px; fill: white; margin-left: 2px; }
+
+        /* ============ MESSENGERS CTA ============ */
+        .messengers {
+            padding: 40px 0 0;
+            text-align: center;
+        }
+        .messengers p {
+            font-size: 15px; color: var(--text-light); margin-bottom: 16px;
+        }
+        .msg-links {
+            display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+        }
+        .msg-link {
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 24px; background: white;
+            border: 1.5px solid var(--border); border-radius: 12px;
+            text-decoration: none; color: var(--text);
+            font-size: 14px; font-weight: 600;
+            transition: 0.2s;
+        }
+        .msg-link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .msg-link.wa:hover { border-color: #25D366; }
+        .msg-link.tg:hover { border-color: #0088cc; }
+        .msg-link-icon { font-size: 22px; }
+
+        /* ============ CTA ============ */
+        .cta {
+            padding: 80px 0;
+            background: var(--gradient); text-align: center;
+        }
+        .cta h2 { font-size: 36px; font-weight: 800; color: white; margin-bottom: 14px; }
+        .cta p { font-size: 17px; color: rgba(255,255,255,0.8); margin-bottom: 28px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            padding: 32px 0; background: var(--bg-dark);
+            color: rgba(255,255,255,0.5); font-size: 13px;
+        }
+        .footer-inner {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .footer-brand { display: flex; align-items: center; gap: 8px; color: white; font-size: 16px; }
+        .footer-brand b { color: var(--primary-light); }
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; }
+        .footer-links a:hover { color: white; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 36px; }
+            .services-grid, .steps-grid { grid-template-columns: repeat(2, 1fr); }
+            .step-arrow { display: none; }
+            .explain { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav, .header-cta { display: none; }
+            .burger { display: block; }
+            .hero { padding: 100px 0 60px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-phone { display: none; }
+            .hero h1 { font-size: 30px; }
+            .trust-bar-inner { gap: 24px; }
+            .services-grid, .steps-grid, .reviews-grid { grid-template-columns: 1fr; }
+            .explain { padding: 28px 20px; }
+            .chat-container { height: 480px; border-radius: 16px; }
+            .chat-msgs { padding: 12px 16px; }
+            .chat-inp { padding: 8px 16px 12px; }
+            .chat-qr { padding: 6px 16px; }
+            .section-title { font-size: 26px; }
+            .cta h2 { font-size: 28px; }
+            .footer-inner { flex-direction: column; text-align: center; }
+        }
+
+        /* Mobile nav */
+        .mobile-nav {
+            display: none; position: fixed; top: 68px; left: 0; right: 0;
+            background: white; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 16px 24px; z-index: 99; flex-direction: column; gap: 12px;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a { color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header" id="header">
+    <div class="container header-inner">
+        <a href="/" class="logo">
+            <div class="logo-box">📦</div>
+            <span class="logo-name">Cargo<b>Rapido</b></span>
+        </a>
+        <nav class="nav">
+            <a href="#how">Как это работает</a>
+            <a href="#services">Услуги</a>
+            <a href="#chat-section">Онлайн-менеджер</a>
+            <a href="#reviews">Отзывы</a>
+        </nav>
+        <div class="header-cta">
+            <a href="tel:+74951234567" class="btn btn-outline">📞 Позвонить</a>
+            <a href="#chat-section" class="btn btn-primary">Рассчитать</a>
+        </div>
+        <button class="burger" id="burger"><span></span><span></span><span></span></button>
+    </div>
+</header>
+<div class="mobile-nav" id="mobile-nav">
+    <a href="#how">Как это работает</a>
+    <a href="#services">Услуги</a>
+    <a href="#chat-section">Онлайн-менеджер</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="tel:+74951234567">📞 Позвонить</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-grid">
+            <div>
+                <div class="hero-badge">🚀 Новый стандарт доставки</div>
+                <h1>Персональный менеджер <span>рассчитает доставку за 60 секунд</span></h1>
+                <p class="hero-text">Никаких сложных форм и калькуляторов. Просто напишите что и куда отправить — и получите точную стоимость в чате. Как с живым менеджером, только мгновенно.</p>
+                <div class="hero-btns">
+                    <a href="#chat-section" class="btn btn-primary btn-lg">💬 Написать менеджеру</a>
+                    <a href="https://wa.me/74951234567" class="btn btn-outline btn-lg">WhatsApp</a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-item"><strong>8 лет</strong><span>на рынке</span></div>
+                    <div class="trust-item"><strong>15 000+</strong><span>доставок/мес</span></div>
+                    <div class="trust-item"><strong>99.2%</strong><span>в срок</span></div>
+                    <div class="trust-item"><strong>500+</strong><span>городов</span></div>
+                </div>
+            </div>
+
+            <!-- Phone mockup -->
+            <div class="hero-phone">
+                <div class="phone-frame">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <div class="phone-ava">👩</div>
+                            <div>
+                                <div class="phone-name">Наталья</div>
+                                <div class="phone-status">онлайн</div>
+                            </div>
+                        </div>
+                        <div class="phone-msgs">
+                            <div class="pm pm-bot">
+                                <div class="pm-bubble">Здравствуйте! Я Наталья, ваш менеджер 👋 Что нужно отправить?</div>
+                                <div class="pm-time">12:01</div>
+                            </div>
+                            <div class="pm pm-user">
+                                <div class="pm-bubble">Посылку 5 кг из Москвы в Казань</div>
+                                <div class="pm-time">12:01</div>
+                            </div>
+                            <div class="pm pm-bot">
+                                <div class="pm-bubble">Отлично! Рассчитала для вас:
+
+📦 Стандарт — 890 ₽ (3-4 дня)
+⚡ Экспресс — 1 450 ₽ (1-2 дня)
+
+Забор курьером бесплатно! Какой вариант?</div>
+                                <div class="pm-time">12:02</div>
+                            </div>
+                            <div class="pm pm-user">
+                                <div class="pm-bubble">Давайте экспресс!</div>
+                                <div class="pm-time">12:02</div>
+                            </div>
+                            <div class="pm pm-bot">
+                                <div class="pm-bubble">Супер! ✅ Пришлите адрес забора и данные получателя — оформлю за 2 минуты</div>
+                                <div class="pm-time">12:02</div>
+                            </div>
+                        </div>
+                        <div class="phone-input">
+                            <div class="phone-input-field">Напишите сообщение...</div>
+                            <div class="phone-send"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="white"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST BAR -->
+<section class="trust-bar">
+    <div class="container">
+        <div class="trust-bar-inner">
+            <div class="trust-logo">
+                <div class="trust-logo-icon">🏢</div>
+                ООО «Карго Рапидо»
+            </div>
+            <div class="trust-logo">
+                <div class="trust-logo-icon">📋</div>
+                ИНН 7723456789
+            </div>
+            <div class="trust-logo">
+                <div class="trust-logo-icon">📜</div>
+                Договор-оферта
+            </div>
+            <div class="trust-logo">
+                <div class="trust-logo-icon">🛡️</div>
+                Страхование грузов
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS + EXPLANATION -->
+<section class="section" id="how">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Как это работает</div>
+            <h2 class="section-title">Забудьте про сложные формы</h2>
+            <p class="section-sub">Мы заменили 10 полей ввода на простой диалог с персональным менеджером. Он работает 24/7 и отвечает за 60 секунд.</p>
+        </div>
+
+        <!-- Old vs New comparison -->
+        <div class="explain">
+            <div>
+                <div class="explain-badge">💡 Почему так?</div>
+                <h3>Раньше вы заполняли формы. Теперь — просто пишете.</h3>
+                <p>Наши менеджеры работают 24/7 в чате на сайте, WhatsApp и Telegram. Напишите «посылка 3 кг из Москвы в Сочи» — и получите точную стоимость с вариантами через минуту.</p>
+                <ul class="explain-list">
+                    <li>Настоящая транспортная компания с 2018 года</li>
+                    <li>Все расчёты по тарифам федеральных перевозчиков</li>
+                    <li>Договор, страховка, трекинг — как у всех, только быстрее</li>
+                    <li>Менеджер помнит вашу историю и предпочтения</li>
+                </ul>
+            </div>
+            <div class="explain-right">
+                <div class="compare-card old">
+                    <div class="compare-label">❌ Раньше</div>
+                    <div class="compare-steps">
+                        <div class="compare-step"><span class="num">1</span> Открыть сайт</div>
+                        <div class="compare-step"><span class="num">2</span> Найти калькулятор</div>
+                        <div class="compare-step"><span class="num">3</span> Заполнить 10 полей</div>
+                        <div class="compare-step"><span class="num">4</span> Нажать «Рассчитать»</div>
+                        <div class="compare-step"><span class="num">5</span> Ждать ответ менеджера</div>
+                        <div class="compare-step"><span class="num">6</span> Заполнить заявку</div>
+                    </div>
+                    <div class="compare-time">⏱ 15-30 минут</div>
+                </div>
+                <div class="compare-card new">
+                    <div class="compare-label">✅ Теперь</div>
+                    <div class="compare-steps">
+                        <div class="compare-step"><span class="num">1</span> Написать в чат</div>
+                        <div class="compare-step"><span class="num">2</span> Получить расчёт</div>
+                        <div class="compare-step"><span class="num">3</span> Подтвердить</div>
+                    </div>
+                    <div class="compare-time">⚡ 2 минуты</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h4>Напишите</h4>
+                <p>В чат на сайте, WhatsApp или Telegram — что, откуда и куда</p>
+                <span class="step-arrow">→</span>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h4>Получите расчёт</h4>
+                <p>Точная стоимость с вариантами доставки за 60 секунд</p>
+                <span class="step-arrow">→</span>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h4>Подтвердите</h4>
+                <p>Скажите «да» — менеджер оформит заявку и вызовет курьера</p>
+                <span class="step-arrow">→</span>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h4>Отслеживайте</h4>
+                <p>Трекинг в реальном времени. Уведомления на каждом этапе</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services" style="background: var(--bg-light);">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Услуги</div>
+            <h2 class="section-title">Доставляем всё</h2>
+            <p class="section-sub">От документов до тяжёлых грузов. По России и странам СНГ.</p>
+        </div>
+        <div class="services-grid">
+            <div class="svc-card">
+                <div class="svc-icon">📄</div>
+                <h4>Документы</h4>
+                <p>Срочная доставка от 1 дня</p>
+                <div class="svc-price">от 350 ₽</div>
+            </div>
+            <div class="svc-card">
+                <div class="svc-icon">📦</div>
+                <h4>Посылки</h4>
+                <p>До 30 кг с отслеживанием</p>
+                <div class="svc-price">от 490 ₽</div>
+            </div>
+            <div class="svc-card">
+                <div class="svc-icon">🚛</div>
+                <h4>Грузы</h4>
+                <p>Сборные и целые машины</p>
+                <div class="svc-price">от 1 200 ₽</div>
+            </div>
+            <div class="svc-card">
+                <div class="svc-icon">🌍</div>
+                <h4>СНГ</h4>
+                <p>Международная доставка</p>
+                <div class="svc-price">от 1 500 ₽</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" id="reviews">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Отзывы</div>
+            <h2 class="section-title">Клиенты говорят</h2>
+        </div>
+        <div class="reviews-grid">
+            <div class="review">
+                <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                <p>"Написал в чат, через минуту получил расчёт. Посылка в Казани через 2 дня. Раньше на оформление уходило полчаса!"</p>
+                <div class="review-author"><strong>Виктор К.</strong><span>Москва</span></div>
+            </div>
+            <div class="review">
+                <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                <p>"Сначала не поверила что так просто. Написала в WhatsApp — менеджер всё оформила. Теперь только через них."</p>
+                <div class="review-author"><strong>Елена А.</strong><span>ООО «TechGroup»</span></div>
+            </div>
+            <div class="review">
+                <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                <p>"Менеджер помнит мои прошлые отправки и сразу предлагает лучший вариант. Как будто персональный ассистент."</p>
+                <div class="review-author"><strong>Григорий Ю.</strong><span>Предприниматель</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CHAT SECTION -->
+<section class="chat-section" id="chat-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-label">Онлайн</div>
+            <h2 class="section-title">Напишите прямо сейчас</h2>
+            <p class="section-sub">Наталья ответит за 60 секунд. Без регистрации, без форм.</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-hdr">
+                <div class="chat-hdr-ava">👩</div>
+                <div>
+                    <div class="chat-hdr-name">Наталья — менеджер Cargo Rapido</div>
+                    <div class="chat-hdr-status"><div class="chat-hdr-dot"></div> онлайн</div>
+                </div>
+            </div>
+            <div class="chat-msgs" id="chat-msgs"></div>
+            <div class="chat-qr" id="chat-qr">
+                <button class="qr" data-m="Рассчитать доставку посылки">📦 Рассчитать доставку</button>
+                <button class="qr" data-m="Отправить документы">📄 Документы</button>
+                <button class="qr" data-m="Доставка груза по России">🚛 Груз</button>
+                <button class="qr" data-m="Какие цены и сроки?">💰 Цены</button>
+            </div>
+            <div class="chat-inp">
+                <div class="chat-inp-box">
+                    <textarea id="chat-input" rows="1" placeholder="Напишите что и куда отправить..."></textarea>
+                    <button class="chat-send" id="chat-send">
+                        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messengers -->
+        <div class="messengers">
+            <p>Или напишите в удобный мессенджер — тот же менеджер, та же скорость:</p>
+            <div class="msg-links">
+                <a href="https://wa.me/74951234567" class="msg-link wa"><span class="msg-link-icon">💬</span> WhatsApp</a>
+                <a href="https://t.me/cargorapido_bot" class="msg-link tg"><span class="msg-link-icon">✈️</span> Telegram</a>
+                <a href="#" class="msg-link"><span class="msg-link-icon">💜</span> MAX / VK</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="container">
+        <h2>Готовы попробовать?</h2>
+        <p>Первый расчёт — бесплатно и без обязательств. Просто напишите.</p>
+        <a href="#chat-section" class="btn btn-white">💬 Написать менеджеру</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-brand">📦 Cargo<b>Rapido</b></div>
+        <div class="footer-links">
+            <a href="#services">Услуги</a>
+            <a href="#how">Как работает</a>
+            <a href="#reviews">Отзывы</a>
+            <a href="#">Договор-оферта</a>
+        </div>
+        <div>© 2026 Cargo Rapido</div>
+    </div>
+</footer>
+
+<script>
+// Chat logic
+const API_URL = window.CARGO_AI_API || 'https://cargo-rapido-assistant-production.up.railway.app';
+const msgsEl = document.getElementById('chat-msgs');
+const inpEl = document.getElementById('chat-input');
+const sendEl = document.getElementById('chat-send');
+const qrEl = document.getElementById('chat-qr');
+
+let sid = localStorage.getItem('cr3_sid');
+if (!sid) { sid = 'cr3_' + Math.random().toString(36).substr(2,10) + Date.now(); localStorage.setItem('cr3_sid', sid); }
+
+function getT() { const d = new Date(); return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0'); }
+
+function addM(type, text) {
+    const d = document.createElement('div');
+    d.className = 'cm cm-' + type;
+    let h = '';
+    if (type === 'bot') h += '<div class="cm-ava">👩</div>';
+    h += '<div><div class="cm-bubble"></div><div class="cm-time">' + getT() + '</div></div>';
+    d.innerHTML = h;
+    d.querySelector('.cm-bubble').textContent = text;
+    msgsEl.appendChild(d);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+function showT() {
+    let t = document.getElementById('tind');
+    if (t) return;
+    t = document.createElement('div');
+    t.className = 'typing-ind show'; t.id = 'tind';
+    t.innerHTML = '<div class="cm-ava">👩</div><div class="typing-dots"><span></span><span></span><span></span></div>';
+    msgsEl.appendChild(t);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+function hideT() { const t = document.getElementById('tind'); if (t) t.remove(); }
+
+inpEl.addEventListener('input', () => { inpEl.style.height = 'auto'; inpEl.style.height = Math.min(inpEl.scrollHeight, 80) + 'px'; });
+inpEl.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); doSend(); } });
+sendEl.addEventListener('click', doSend);
+document.querySelectorAll('.qr').forEach(b => b.addEventListener('click', () => { inpEl.value = b.dataset.m; doSend(); }));
+
+async function doSend() {
+    const t = inpEl.value.trim(); if (!t) return;
+    qrEl.classList.add('hidden');
+    inpEl.value = ''; inpEl.style.height = 'auto';
+    sendEl.disabled = true;
+    addM('user', t); showT();
+    try {
+        const r = await fetch(API_URL + '/chat', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({session_id: sid, message: t}) });
+        if (!r.ok) throw 0;
+        const d = await r.json(); hideT(); addM('bot', d.reply);
+    } catch(e) {
+        hideT(); addM('bot', 'Извините, сейчас не могу ответить 😔 Напишите в WhatsApp — менеджер ответит мгновенно!');
+    }
+    sendEl.disabled = false; inpEl.focus();
+}
+
+setTimeout(() => addM('bot', 'Здравствуйте! 👋 Я Наталья, ваш менеджер в Cargo Rapido.\n\nНапишите что и куда нужно отправить — рассчитаю стоимость за минуту. Или выберите вопрос ниже ⬇️'), 500);
+
+// Header
+const burger = document.getElementById('burger');
+const mnav = document.getElementById('mobile-nav');
+burger.addEventListener('click', () => { burger.classList.toggle('active'); mnav.classList.toggle('open'); });
+document.querySelectorAll('.mobile-nav a').forEach(a => a.addEventListener('click', () => { burger.classList.remove('active'); mnav.classList.remove('open'); }));
+window.addEventListener('scroll', () => document.getElementById('header').classList.toggle('scrolled', scrollY > 50));
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => { const el = document.querySelector(a.getAttribute('href')); if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); } }));
+</script>
+
+</body>
+</html>
