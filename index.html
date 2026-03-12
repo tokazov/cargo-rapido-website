@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Rapido — Быстрая доставка по России и СНГ</title>
+    <meta name="description" content="Курьерская доставка грузов, посылок и документов по всей России и СНГ. Рассчитайте стоимость за 30 секунд.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="container header-inner">
+        <a href="/" class="logo">
+            <span class="logo-icon">📦</span>
+            <span class="logo-text">Cargo<strong>Rapido</strong></span>
+        </a>
+        <nav class="nav">
+            <a href="#calculator">Рассчитать</a>
+            <a href="#services">Услуги</a>
+            <a href="#how">Как это работает</a>
+            <a href="#about">О нас</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+        <div class="header-actions">
+            <a href="#track" class="btn btn-outline btn-sm">Отследить</a>
+            <a href="tel:+74951234567" class="btn btn-primary btn-sm">📞 Позвонить</a>
+        </div>
+        <button class="burger" id="burger" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container hero-inner">
+        <div class="hero-content">
+            <div class="hero-badge">🚀 Доставка от 1 дня</div>
+            <h1>Доставим ваш груз <span class="gradient-text">быстро и надёжно</span></h1>
+            <p class="hero-sub">Курьерская доставка посылок, документов и грузов по всей России и странам СНГ. Персональный менеджер для каждого клиента.</p>
+            <div class="hero-btns">
+                <a href="#calculator" class="btn btn-primary btn-lg">Рассчитать стоимость</a>
+                <a href="#chat-open" class="btn btn-outline btn-lg" id="open-chat-btn">💬 Написать менеджеру</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <strong>15 000+</strong>
+                    <span>доставок в месяц</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <strong>99.2%</strong>
+                    <span>доставлено в срок</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <strong>500+</strong>
+                    <span>городов России</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="hero-card-header">
+                    <span class="pulse-dot"></span>
+                    Доставка в пути
+                </div>
+                <div class="hero-card-route">
+                    <div class="route-point">
+                        <div class="route-dot from"></div>
+                        <span>Москва</span>
+                    </div>
+                    <div class="route-line">
+                        <div class="route-truck">🚛</div>
+                    </div>
+                    <div class="route-point">
+                        <div class="route-dot to"></div>
+                        <span>Казань</span>
+                    </div>
+                </div>
+                <div class="hero-card-info">
+                    <div><span>Статус:</span> В пути</div>
+                    <div><span>Прибытие:</span> Завтра, до 18:00</div>
+                    <div><span>Вес:</span> 12.5 кг</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-bg-decor"></div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calculator" id="calculator">
+    <div class="container">
+        <div class="calc-card">
+            <h2>Рассчитайте стоимость доставки</h2>
+            <p class="calc-sub">Узнайте точную стоимость за 30 секунд</p>
+            <form class="calc-form" id="calc-form">
+                <div class="calc-row">
+                    <div class="calc-field">
+                        <label>Откуда</label>
+                        <input type="text" id="calc-from" placeholder="Город отправления" required>
+                    </div>
+                    <button type="button" class="swap-btn" id="swap-cities" title="Поменять местами">⇄</button>
+                    <div class="calc-field">
+                        <label>Куда</label>
+                        <input type="text" id="calc-to" placeholder="Город получения" required>
+                    </div>
+                </div>
+                <div class="calc-row">
+                    <div class="calc-field">
+                        <label>Вес (кг)</label>
+                        <input type="number" id="calc-weight" placeholder="0.5" min="0.1" step="0.1" required>
+                    </div>
+                    <div class="calc-field">
+                        <label>Длина (см)</label>
+                        <input type="number" id="calc-length" placeholder="30">
+                    </div>
+                    <div class="calc-field">
+                        <label>Ширина (см)</label>
+                        <input type="number" id="calc-width" placeholder="20">
+                    </div>
+                    <div class="calc-field">
+                        <label>Высота (см)</label>
+                        <input type="number" id="calc-height" placeholder="15">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-full">
+                    Рассчитать стоимость
+                </button>
+            </form>
+            <div class="calc-result" id="calc-result" style="display:none">
+                <h3>Варианты доставки:</h3>
+                <div id="calc-options"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRACK -->
+<section class="track" id="track">
+    <div class="container">
+        <div class="track-card">
+            <div class="track-icon">📍</div>
+            <h2>Отследить посылку</h2>
+            <form class="track-form" id="track-form">
+                <input type="text" id="track-input" placeholder="Введите трек-номер (например CR-12345)">
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </form>
+            <div class="track-result" id="track-result" style="display:none"></div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+    <div class="container">
+        <h2 class="section-title">Наши услуги</h2>
+        <p class="section-sub">Полный спектр логистических решений для бизнеса и частных лиц</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">📄</div>
+                <h3>Документы</h3>
+                <p>Срочная доставка документов по России. От 1 рабочего дня.</p>
+                <div class="service-price">от 350 ₽</div>
+            </div>
+            <div class="service-card featured">
+                <div class="service-badge">Популярно</div>
+                <div class="service-icon">📦</div>
+                <h3>Посылки</h3>
+                <p>Доставка посылок до 30 кг с отслеживанием и страховкой.</p>
+                <div class="service-price">от 490 ₽</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🏗️</div>
+                <h3>Грузы</h3>
+                <p>Перевозка грузов любого веса. Сборные и целые машины.</p>
+                <div class="service-price">от 1 200 ₽</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌍</div>
+                <h3>СНГ</h3>
+                <p>Международная доставка в страны СНГ и обратно.</p>
+                <div class="service-price">от 1 500 ₽</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+    <div class="container">
+        <h2 class="section-title">Как это работает</h2>
+        <p class="section-sub">4 простых шага от заявки до доставки</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Оставьте заявку</h3>
+                <p>Напишите в чат или рассчитайте стоимость на сайте. Менеджер ответит за 60 секунд.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Подтвердите</h3>
+                <p>Мы рассчитаем точную стоимость и согласуем детали доставки.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Забор груза</h3>
+                <p>Курьер приедет по указанному адресу и заберёт посылку.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h3>Доставка</h3>
+                <p>Отслеживайте в реальном времени. Получатель получит груз в срок.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ADVANTAGES -->
+<section class="advantages">
+    <div class="container">
+        <h2 class="section-title">Почему выбирают нас</h2>
+        <div class="adv-grid">
+            <div class="adv-item">
+                <div class="adv-icon">⚡</div>
+                <h4>Быстро</h4>
+                <p>Доставка от 1 дня. Экспресс-доставка в тот же день для Москвы и СПб.</p>
+            </div>
+            <div class="adv-item">
+                <div class="adv-icon">🛡️</div>
+                <h4>Надёжно</h4>
+                <p>Страхование грузов. Бережная обработка. 99.2% доставок в срок.</p>
+            </div>
+            <div class="adv-item">
+                <div class="adv-icon">👤</div>
+                <h4>Персонально</h4>
+                <p>Личный менеджер для каждого клиента. На связи 24/7.</p>
+            </div>
+            <div class="adv-item">
+                <div class="adv-icon">💰</div>
+                <h4>Выгодно</h4>
+                <p>Конкурентные цены. Скидки для постоянных клиентов и бизнеса.</p>
+            </div>
+            <div class="adv-item">
+                <div class="adv-icon">📱</div>
+                <h4>Удобно</h4>
+                <p>Оформление за 2 минуты. Отслеживание онлайн. Уведомления.</p>
+            </div>
+            <div class="adv-item">
+                <div class="adv-icon">🌐</div>
+                <h4>Широко</h4>
+                <p>500+ городов России и все страны СНГ. Доставим куда нужно.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+    <div class="container">
+        <h2 class="section-title">Отзывы клиентов</h2>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                <p>"Хотелось бы выразить признательность сотрудникам вашей компании за грамотную и эффективную работу. Мой личный менеджер всегда на связи!"</p>
+                <div class="review-author">
+                    <strong>Виктор К.</strong>
+                    <span>Постоянный клиент</span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                <p>"С Cargo Rapido всё оказалось невероятно просто! Просто написал менеджеру и вскоре моя посылка была в пути. Рекомендую!"</p>
+                <div class="review-author">
+                    <strong>Григорий Ю.</strong>
+                    <span>Предприниматель</span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                <p>"Безупречный сервис! Надежность и скорость доставки на высшем уровне. Настоятельно рекомендую для всех ваших отправлений."</p>
+                <div class="review-author">
+                    <strong>Елена А.</strong>
+                    <span>ООО «TechGroup»</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="container cta-inner">
+        <h2>Готовы отправить?</h2>
+        <p>Напишите нашему AI-менеджеру Наталье — она рассчитает стоимость и оформит доставку за 2 минуты</p>
+        <button class="btn btn-white btn-lg" id="cta-chat-btn">💬 Начать чат с Натальей</button>
+    </div>
+</section>
+
+<!-- CONTACTS -->
+<section class="contacts" id="contacts">
+    <div class="container">
+        <h2 class="section-title">Контакты</h2>
+        <div class="contacts-grid">
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <h4>Телефон</h4>
+                <a href="tel:+74951234567">+7 (495) 123-45-67</a>
+                <p>Пн-Пт: 9:00 — 20:00</p>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <h4>Email</h4>
+                <a href="mailto:info@cargorapido.ru">info@cargorapido.ru</a>
+                <p>Ответим в течение часа</p>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">💬</div>
+                <h4>Мессенджеры</h4>
+                <a href="https://wa.me/74951234567">WhatsApp</a>
+                <p>Онлайн 24/7</p>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <h4>Офис</h4>
+                <p>Москва, ул. Примерная, д. 1</p>
+                <p>Пн-Пт: 10:00 — 19:00</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-brand">
+            <span class="logo-icon">📦</span>
+            <span class="logo-text">Cargo<strong>Rapido</strong></span>
+            <p>Быстрая и надёжная доставка по России и СНГ</p>
+        </div>
+        <div class="footer-links">
+            <a href="#services">Услуги</a>
+            <a href="#calculator">Калькулятор</a>
+            <a href="#track">Отслеживание</a>
+            <a href="#contacts">Контакты</a>
+        </div>
+        <div class="footer-copy">
+            © 2026 Cargo Rapido. Все права защищены.
+        </div>
+    </div>
+</footer>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+    <a href="#calculator" onclick="closeMobileNav()">Рассчитать</a>
+    <a href="#services" onclick="closeMobileNav()">Услуги</a>
+    <a href="#how" onclick="closeMobileNav()">Как это работает</a>
+    <a href="#about" onclick="closeMobileNav()">О нас</a>
+    <a href="#contacts" onclick="closeMobileNav()">Контакты</a>
+    <a href="#track" onclick="closeMobileNav()">Отследить посылку</a>
+</div>
+
+<script src="chat-widget.js"></script>
+<script>
+// Burger menu
+const burger = document.getElementById('burger');
+const mobileNav = document.getElementById('mobile-nav');
+burger.addEventListener('click', () => {
+    burger.classList.toggle('active');
+    mobileNav.classList.toggle('open');
+});
+function closeMobileNav() {
+    burger.classList.remove('active');
+    mobileNav.classList.remove('open');
+}
+
+// Swap cities
+document.getElementById('swap-cities').addEventListener('click', () => {
+    const from = document.getElementById('calc-from');
+    const to = document.getElementById('calc-to');
+    [from.value, to.value] = [to.value, from.value];
+});
+
+// Calculator form (MVP — opens chat with pre-filled data)
+document.getElementById('calc-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const from = document.getElementById('calc-from').value;
+    const to = document.getElementById('calc-to').value;
+    const weight = document.getElementById('calc-weight').value;
+
+    // Open chat with pre-filled message
+    if (window.openCargoChat) {
+        window.openCargoChat(`Здравствуйте! Хочу рассчитать доставку: ${from} → ${to}, вес ${weight} кг`);
+    }
+});
+
+// Open chat buttons
+document.getElementById('open-chat-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (window.openCargoChat) window.openCargoChat();
+});
+document.getElementById('cta-chat-btn').addEventListener('click', () => {
+    if (window.openCargoChat) window.openCargoChat();
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id === '#chat-open') return;
+        const el = document.querySelector(id);
+        if (el) {
+            e.preventDefault();
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// Header scroll effect
+window.addEventListener('scroll', () => {
+    document.querySelector('.header').classList.toggle('scrolled', window.scrollY > 50);
+});
+</script>
+
+</body>
+</html>
