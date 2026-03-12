@@ -165,6 +165,26 @@
             display: flex; flex-direction: column; gap: 6px;
             overflow: hidden;
         }
+        .pm { opacity: 0; transform: translateY(8px); transition: all 0.4s ease; }
+        .pm.visible { opacity: 1; transform: translateY(0); }
+        .phone-typing {
+            align-self: flex-start;
+            display: none; gap: 4px; align-items: center;
+            padding: 8px 14px; background: white;
+            border-radius: 4px 14px 14px 14px;
+        }
+        .phone-typing.show { display: flex; }
+        .phone-typing span {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #B0B0BE;
+            animation: ptdot 1.4s infinite;
+        }
+        .phone-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .phone-typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes ptdot {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
         .pm { max-width: 80%; }
         .pm-bot { align-self: flex-start; }
         .pm-user { align-self: flex-end; }
@@ -616,32 +636,8 @@
                                 <div class="phone-status">онлайн</div>
                             </div>
                         </div>
-                        <div class="phone-msgs">
-                            <div class="pm pm-bot">
-                                <div class="pm-bubble">Здравствуйте! Я Наталья, ваш менеджер 👋 Что нужно отправить?</div>
-                                <div class="pm-time">12:01</div>
-                            </div>
-                            <div class="pm pm-user">
-                                <div class="pm-bubble">Посылку 5 кг из Москвы в Казань</div>
-                                <div class="pm-time">12:01</div>
-                            </div>
-                            <div class="pm pm-bot">
-                                <div class="pm-bubble">Отлично! Рассчитала для вас:
-
-📦 Стандарт — 890 ₽ (3-4 дня)
-⚡ Экспресс — 1 450 ₽ (1-2 дня)
-
-Забор курьером бесплатно! Какой вариант?</div>
-                                <div class="pm-time">12:02</div>
-                            </div>
-                            <div class="pm pm-user">
-                                <div class="pm-bubble">Давайте экспресс!</div>
-                                <div class="pm-time">12:02</div>
-                            </div>
-                            <div class="pm pm-bot">
-                                <div class="pm-bubble">Супер! ✅ Пришлите адрес забора и данные получателя — оформлю за 2 минуты</div>
-                                <div class="pm-time">12:02</div>
-                            </div>
+                        <div class="phone-msgs" id="phone-msgs">
+                            <div class="phone-typing" id="phone-typing"><span></span><span></span><span></span></div>
                         </div>
                         <div class="phone-input">
                             <div class="phone-input-field">Напишите сообщение...</div>
@@ -945,6 +941,85 @@ async function doSend() {
 }
 
 setTimeout(() => addM('bot', 'Здравствуйте! 👋 Я Наталья, ваш менеджер в Cargo Rapido.\n\nНапишите что и куда нужно отправить — рассчитаю стоимость за минуту. Или выберите вопрос ниже ⬇️'), 500);
+
+// ============ PHONE CHAT ANIMATION ============
+const phoneEl = document.getElementById('phone-msgs');
+const phoneTyping = document.getElementById('phone-typing');
+
+const dialog = [
+    { type: 'bot', text: 'Здравствуйте! Я Наталья 👋\nЧто нужно отправить?', time: '12:01' },
+    { type: 'user', text: 'Посылку 5 кг из Москвы в Казань', time: '12:01' },
+    { type: 'bot', text: 'Рассчитала для вас:\n\n📦 Стандарт — 890 ₽ (3-4 дня)\n⚡ Экспресс — 1 450 ₽ (1-2 дня)\n\nЗабор курьером бесплатно!', time: '12:02' },
+    { type: 'user', text: 'Давайте экспресс!', time: '12:02' },
+    { type: 'bot', text: 'Отлично! ✅ Пришлите адрес забора и данные получателя — оформлю за 2 минуты', time: '12:02' },
+    { type: 'user', text: 'Москва, ул. Ленина 15, кв 42\nПолучатель: Иванов Сергей\n+7 917 123-45-67', time: '12:03' },
+    { type: 'bot', text: 'Заявка оформлена! 🎉\n\nТрек: CR-84521\nЗабор: завтра 10:00-14:00\nДоставка: послезавтра до 18:00\n\nОтслеживайте по трек-номеру!', time: '12:03' },
+];
+
+let dialogIndex = 0;
+let dialogRunning = false;
+
+function addPhoneMsg(msg) {
+    const div = document.createElement('div');
+    div.className = 'pm pm-' + msg.type;
+    const bubble = document.createElement('div');
+    bubble.className = 'pm-bubble';
+    bubble.textContent = msg.text;
+    const time = document.createElement('div');
+    time.className = 'pm-time';
+    time.textContent = msg.time;
+    div.appendChild(bubble);
+    div.appendChild(time);
+    phoneEl.insertBefore(div, phoneTyping);
+    // Trigger animation
+    requestAnimationFrame(() => { requestAnimationFrame(() => { div.classList.add('visible'); }); });
+    phoneEl.scrollTop = phoneEl.scrollHeight;
+}
+
+function playDialog() {
+    if (dialogIndex >= dialog.length) {
+        // Restart after pause
+        setTimeout(() => {
+            // Clear messages
+            phoneEl.querySelectorAll('.pm').forEach(m => m.remove());
+            dialogIndex = 0;
+            playDialog();
+        }, 5000);
+        return;
+    }
+
+    const msg = dialog[dialogIndex];
+    const typingDelay = msg.type === 'bot' ? 1200 : 800;
+    const showDelay = msg.type === 'bot' ? 600 + msg.text.length * 15 : 400;
+
+    // Show typing for bot messages
+    if (msg.type === 'bot') {
+        phoneTyping.classList.add('show');
+        phoneEl.scrollTop = phoneEl.scrollHeight;
+    }
+
+    setTimeout(() => {
+        phoneTyping.classList.remove('show');
+        addPhoneMsg(msg);
+        dialogIndex++;
+        // Next message delay
+        const pause = msg.type === 'bot' ? 1800 : 1200;
+        setTimeout(playDialog, pause);
+    }, msg.type === 'bot' ? typingDelay + showDelay : showDelay);
+}
+
+// Start animation when hero is visible
+const heroObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting && !dialogRunning) {
+            dialogRunning = true;
+            setTimeout(playDialog, 1000);
+        }
+    });
+}, { threshold: 0.3 });
+
+const phoneFrame = document.querySelector('.phone-frame');
+if (phoneFrame) heroObs.observe(phoneFrame);
 
 // Header
 const burger = document.getElementById('burger');
